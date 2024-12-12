@@ -104,33 +104,39 @@ closeModalBtnNone.addEventListener('click', () => {
 function editFaculty(facultyId, facultyType) {
     console.log("Editing faculty:", facultyId, facultyType);  
 
-    // Declare URL variable to store API endpoint
-    let url = `controller/get_faculty_data.php?id=${facultyId}&type=${facultyType}`;
+    let url = `/faculty_management_system/controller/get_faculty_data.php?id=${facultyId}&type=${encodeURIComponent(facultyType)}`;
 
-    // Open the Teaching Faculty Modal
+    // Open the appropriate modal
     if (facultyType === 'Teaching Faculty') {
         modalTeach.classList.remove('hidden');
         console.log("Opening Teaching Faculty Modal"); 
-    }
-    // Open the Non-Teaching Faculty Modal
-    else if (facultyType === 'Non-Teaching Faculty') {
+    } else if (facultyType === 'Non-Teaching Faculty') {
         modalNone.classList.remove('hidden');
         console.log("Opening Non-Teaching Faculty Modal");  
     } else {
         console.log("Unknown faculty type:", facultyType);  
+        return;
     }
 
-    // Fetch the data from the backend
+    // Fetch data from the backend
     fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        if (facultyType === 'Teaching Faculty') {
-            populateTeachingFacultyModal(data);
-        } else if (facultyType === 'Non-Teaching Faculty') {
-            populateNonTeachingFacultyModal(data);
-        }
-    })
-    .catch(error => console.error('Error fetching data:', error));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+            if (facultyType === 'Teaching Faculty') {
+                populateTeachingFacultyModal(data);
+            } else if (facultyType === 'Non-Teaching Faculty') {
+                populateNonTeachingFacultyModal(data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
 }
 
 // Populate the Teaching Faculty Modal with data
@@ -150,13 +156,13 @@ function populateTeachingFacultyModal(data) {
 
     // Populate the educational credentials if available
     if (data.educational_credentials) {
-        document.getElementById('highestDegreeFaculty').value = data.educational_credentials_earned.highest_degree_attained_code;
-        document.getElementById('bachelorProgramFieldFaculty').value = data.educational_credentials_earned.bachelors_degree_program_name;
-        document.getElementById('bachelorDegreeCodeFieldFaculty').value = data.educational_credentials_earned.bachelors_degree_code;
-        document.getElementById('masterProgramFieldFaculty').value = data.educational_credentials_earned.masters_degree_program_name;
-        document.getElementById('masterDegreeCodeFieldFaculty').value = data.educational_credentials_earned.masters_degree_code;
-        document.getElementById('doctorateProgramFieldFaculty').value = data.educational_credentials_earned.doctorate_program_name;
-        document.getElementById('doctorateDegreeCodeFieldFaculty').value = data.educational_credentials_earned.doctorate_program_code;
+        document.getElementById('highestDegreeFaculty').value = data.educational_credentials.highest_degree_attained_code;
+        document.getElementById('bachelorProgramFieldFaculty').value = data.educational_credentials.bachelors_degree_program_name;
+        document.getElementById('bachelorDegreeCodeFieldFaculty').value = data.educational_credentials.bachelors_degree_code;
+        document.getElementById('masterProgramFieldFaculty').value = data.educational_credentials.masters_degree_program_name;
+        document.getElementById('masterDegreeCodeFieldFaculty').value = data.educational_credentials.masters_degree_code;
+        document.getElementById('doctorateProgramFieldFaculty').value = data.educational_credentials.doctorate_program_name;
+        document.getElementById('doctorateDegreeCodeFieldFaculty').value = data.educational_credentials.doctorate_program_code;
     }
 }
 
@@ -175,13 +181,13 @@ function populateNonTeachingFacultyModal(data) {
 
     // Populate the educational credentials if available
     if (data.educational_credentials) {
-        document.getElementById('noneModalHighestDegree').value = data.educational_credentials_earned.highest_degree_attained_code;
-        document.getElementById('noneModalBachelorProgram').value = data.educational_credentials_earned.bachelors_degree_program_name;
-        document.getElementById('noneModalBachelorDegreeCode').value = data.educational_credentials_earned.bachelors_degree_code;
-        document.getElementById('noneModalMasterProgram').value = data.educational_credentials_earned.masters_degree_program_name;
-        document.getElementById('noneModalMasterDegreeCode').value = data.educational_credentials_earned.masters_degree_code;
-        document.getElementById('noneModalDoctorateProgram').value = data.educational_credentials_earned.doctorate_program_name;
-        document.getElementById('noneModalDoctorateDegreeCode').value = data.educational_credentials_earned.doctorate_program_code;
+        document.getElementById('noneModalHighestDegree').value = data.educational_credentials.highest_degree_attained_code;
+        document.getElementById('noneModalBachelorProgram').value = data.educational_credentials.bachelors_degree_program_name;
+        document.getElementById('noneModalBachelorDegreeCode').value = data.educational_credentials.bachelors_degree_code;
+        document.getElementById('noneModalMasterProgram').value = data.educational_credentials.masters_degree_program_name;
+        document.getElementById('noneModalMasterDegreeCode').value = data.educational_credentials.masters_degree_code;
+        document.getElementById('noneModalDoctorateProgram').value = data.educational_credentials.doctorate_program_name;
+        document.getElementById('noneModalDoctorateDegreeCode').value = data.educational_credentials.doctorate_program_code;
     }
 }
 

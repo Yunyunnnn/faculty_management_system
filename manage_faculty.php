@@ -39,7 +39,7 @@ include 'controller\fetch_faculty_data.php';
                 Add New Teaching Faculty
             </button>
             <button class="bg-green-600 px-6 py-3 text-white font-semibold rounded-lg" id="openNonTeachingModalBtn">
-                Add New Non-Teaching Faculty
+                Add New None-Teaching Faculty
             </button>
         </div>
     </div>
@@ -291,7 +291,7 @@ include 'controller\fetch_faculty_data.php';
                     <div class="grid grid-cols-3 gap-4">
                         <div class="mb-4">
                             <label for="nonTeaching_designation" class="block text-sm font-medium text-gray-300">Designation</label>
-                            <input type="text" id="nonTeaching_designation" name="non_teaching_designation" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="number" id="nonTeaching_designation" name="non_teaching_designation" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="nonTeaching_employmentStatus" class="block text-sm font-medium text-gray-300">Employment Status</label>
@@ -618,7 +618,7 @@ include 'controller\fetch_faculty_data.php';
                     <div class="grid grid-cols-3 gap-4">
                         <div class="mb-4">
                             <label for="noneModalDesignation" class="block text-sm font-medium text-gray-300">Designation</label>
-                            <input type="text" id="noneModalDesignation" name="designationEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="number" id="noneModalDesignation" name="designationEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="noneModalEmploymentStatus" class="block text-sm font-medium text-gray-300">Employment Status</label>
@@ -744,7 +744,6 @@ include 'controller\fetch_faculty_data.php';
             </div>
         </div>
     </div>
-
 
 </div>
 

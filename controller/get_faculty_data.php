@@ -4,13 +4,20 @@ include($_SERVER['DOCUMENT_ROOT'] . "/faculty_management_system/config/connectio
 $facultyId = $_GET['id'];
 $facultyType = $_GET['type'];
 
-// Fetch the data from the database based on the faculty ID and type
+error_log("Faculty ID: $facultyId, Faculty Type: $facultyType");
+
+// Fetch the data
 if ($facultyType == 'Teaching Faculty') {
     $data = getTeachingFacultyData($facultyId);
 } else if ($facultyType == 'Non-Teaching Faculty') {
     $data = getNonTeachingFacultyData($facultyId);
 } else {
     $data = null;
+    error_log("Invalid faculty type provided.");
+}
+
+if (!$data) {
+    error_log("No data found for Faculty ID: $facultyId, Type: $facultyType");
 }
 
 header('Content-Type: application/json');
@@ -61,12 +68,11 @@ function getTeachingFacultyData($facultyId) {
 
 // Fetch non-teaching faculty data from the database
 function getNonTeachingFacultyData($facultyId) {
-    global $pdo;  // Assuming $pdo is your database connection
+    global $pdo;  
 
-    // Prepare SQL query to fetch the data for non-teaching faculty
     $query = "
         SELECT 
-            first_name, last_name, middle_initial, designation, 
+            first_name, last_name, middle_initial, designation_code, 
             employment_status_code, gender_code, professional_license_code, 
             tenure_of_employment_code, years_of_service, annual_salary_code
         FROM non_teaching_faculty_information
@@ -78,8 +84,9 @@ function getNonTeachingFacultyData($facultyId) {
     $stmt->execute(['facultyId' => $facultyId]);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    error_log("Non-Teaching Faculty Data: " . print_r($data, true));
+
     if ($data) {
-        // Fetch educational credentials for the non-teaching faculty
         $educationalQuery = "
             SELECT 
                 highest_degree_attained_code, bachelors_degree_program_name, 
@@ -88,17 +95,20 @@ function getNonTeachingFacultyData($facultyId) {
             FROM educational_credential_earned
             WHERE non_teaching_faculty_id = :facultyId
         ";
-
+    
         $stmt = $pdo->prepare($educationalQuery);
         $stmt->execute(['facultyId' => $facultyId]);
-        $educationalData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Add educational data to the main data array
+        $educationalData = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    
         if ($educationalData) {
             $data['educational_credentials'] = $educationalData;
+        } else {
+            $data['educational_credentials'] = [];  
         }
     }
+   
 
     return $data;
 }
+
 ?>

@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $years_of_service = $_POST['non_teaching_years_of_service'] ?: 'none';
     $annual_salary_code = $_POST['non_teaching_annual_salary_code'] ?: 'none';
 
-    // Retrieve highest degree attained code (if provided)
     $highest_degree_attained_code = $_POST['non_teaching_highest_degree_attained_code'] ?: 'none';
 
     try {
