@@ -10,6 +10,7 @@ SELECT
     f.last_name, 
     f.employment_status_code, 
     f.gender_code, 
+    f.employment_status_code, 
     'Teaching Faculty' AS faculty_type
 FROM 
     teaching_faculty_information f
@@ -23,6 +24,7 @@ SELECT
     n.last_name,
     n.employment_status_code,
     n.gender_code,
+    n.employment_status_code, 
     'Non-Teaching Faculty' AS faculty_type
 FROM 
     non_teaching_faculty_information n;
@@ -36,7 +38,7 @@ $facultyData = [];
 if ($result->rowCount() > 0) {
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         // Map gender code to human-readable value
-        $row['gender_name'] = $row['gender_code'] == 1 ? 'Male' : ($row['gender_code'] == 2 ? 'Female' : 'Unknown');
+        $row['gender_name'] = $row['gender_code'] === 'Male' ? 'Male' : ($row['gender_code'] === 'Female' ? 'Female' : 'Unknown');
         $facultyData[] = $row;  // Store the result in an array
     }
 }

@@ -8,12 +8,12 @@ error_log("Faculty ID: $facultyId, Faculty Type: $facultyType");
 
 // Fetch the data
 if ($facultyType == 'Teaching Faculty') {
-    $data = getTeachingFacultyData($facultyId);
-} else if ($facultyType == 'Non-Teaching Faculty') {
-    $data = getNonTeachingFacultyData($facultyId);
-} else {
-    $data = null;
-    error_log("Invalid faculty type provided.");
+        $data = getTeachingFacultyData($facultyId);
+    } else if ($facultyType == 'Non-Teaching Faculty') {
+        $data = getNonTeachingFacultyData($facultyId);
+    } else {
+        $data = null;
+        error_log("Invalid faculty type provided.");
 }
 
 if (!$data) {
@@ -23,11 +23,9 @@ if (!$data) {
 header('Content-Type: application/json');
 echo json_encode($data);
 
-// Fetch teaching faculty data from the database
 function getTeachingFacultyData($facultyId) {
-    global $pdo;  // Assuming $pdo is your database connection
+    global $pdo;  
 
-    // Prepare SQL query to fetch the data for teaching faculty
     $query = "
         SELECT 
             first_name, last_name, middle_initial, employment_status_code, 
@@ -37,13 +35,11 @@ function getTeachingFacultyData($facultyId) {
         WHERE id = :facultyId
     ";
 
-    // Execute the query
     $stmt = $pdo->prepare($query);
     $stmt->execute(['facultyId' => $facultyId]);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($data) {
-        // Fetch educational credentials for the teaching faculty
         $educationalQuery = "
             SELECT 
                 highest_degree_attained_code, bachelors_degree_program_name, 
@@ -57,7 +53,6 @@ function getTeachingFacultyData($facultyId) {
         $stmt->execute(['facultyId' => $facultyId]);
         $educationalData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Add educational data to the main data array
         if ($educationalData) {
             $data['educational_credentials_earned'] = $educationalData;
         }
@@ -66,7 +61,6 @@ function getTeachingFacultyData($facultyId) {
     return $data;
 }
 
-// Fetch non-teaching faculty data from the database
 function getNonTeachingFacultyData($facultyId) {
     global $pdo;  
 
@@ -79,7 +73,6 @@ function getNonTeachingFacultyData($facultyId) {
         WHERE id = :facultyId
     ";
 
-    // Execute the query
     $stmt = $pdo->prepare($query);
     $stmt->execute(['facultyId' => $facultyId]);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -95,20 +88,27 @@ function getNonTeachingFacultyData($facultyId) {
             FROM educational_credential_earned
             WHERE non_teaching_faculty_id = :facultyId
         ";
-    
+
         $stmt = $pdo->prepare($educationalQuery);
         $stmt->execute(['facultyId' => $facultyId]);
-        $educationalData = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-    
+        $educationalData = $stmt->fetch(PDO::FETCH_ASSOC);  // Use fetch() to get a single result
+
         if ($educationalData) {
-            $data['educational_credentials'] = $educationalData;
-        } else {
-            $data['educational_credentials'] = [];  
+            // Change the key to educational_credentials_earned to match the teaching faculty structure
+            $data['educational_credentials_earned'] = [
+                'highest_degree_attained_code' => $educationalData['highest_degree_attained_code'] ?? null,
+                'bachelors_degree_program_name' => $educationalData['bachelors_degree_program_name'] ?? null,
+                'bachelors_degree_code' => $educationalData['bachelors_degree_code'] ?? null,
+                'masters_degree_program_name' => $educationalData['masters_degree_program_name'] ?? null,
+                'masters_degree_code' => $educationalData['masters_degree_code'] ?? null,
+                'doctorate_program_name' => $educationalData['doctorate_program_name'] ?? null,
+                'doctorate_program_code' => $educationalData['doctorate_program_code'] ?? null
+            ];
         }
     }
-   
 
     return $data;
 }
+
 
 ?>

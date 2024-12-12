@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $years_of_service = $_POST['non_teaching_years_of_service'] ?: 'none';
     $annual_salary_code = $_POST['non_teaching_annual_salary_code'] ?: 'none';
 
+    // Retrieve highest degree attained code (if provided)
     $highest_degree_attained_code = $_POST['non_teaching_highest_degree_attained_code'] ?: 'none';
 
     try {
@@ -27,13 +28,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $pdo->prepare($query);
-        $stmt->execute([$first_name, $last_name, $middle_initial, $designation, $employment_status_code, $gender_code, 
-                        $professional_license_code, $tenure_of_employment_code, $years_of_service, $annual_salary_code]);
+        $stmt->execute([
+            $first_name, 
+            $last_name, 
+            $middle_initial, 
+            $designation, 
+            $employment_status_code, 
+            $gender_code, 
+            $professional_license_code, 
+            $tenure_of_employment_code, 
+            $years_of_service, 
+            $annual_salary_code
+        ]);
 
         // Get the inserted non-teaching faculty ID
         $non_teaching_faculty_id = $pdo->lastInsertId();
 
-        // Insert educational credentials for non-teaching faculty
+        // Insert highest degree attained code
+        $edu_query = "INSERT INTO educational_credential_earned 
+                        (non_teaching_faculty_id, highest_degree_attained_code) 
+                      VALUES (?, ?)";
+
+        $edu_stmt = $pdo->prepare($edu_query);
+        $edu_stmt->execute([$non_teaching_faculty_id, $highest_degree_attained_code]);
+
+        // Handle Bachelor's Degrees
         if (isset($_POST['non_teaching_bachelors_degree_program_name']) && isset($_POST['non_teaching_bachelors_degree_code'])) {
             $bachelor_programs = is_array($_POST['non_teaching_bachelors_degree_program_name']) ? $_POST['non_teaching_bachelors_degree_program_name'] : [$_POST['non_teaching_bachelors_degree_program_name']];
             $bachelor_codes = is_array($_POST['non_teaching_bachelors_degree_code']) ? $_POST['non_teaching_bachelors_degree_code'] : [$_POST['non_teaching_bachelors_degree_code']];

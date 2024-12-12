@@ -289,6 +289,87 @@ function deleteFaculty(facultyId) {
     xhr.send("faculty_id=" + facultyId);
 }
 
+//for search bar
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const facultyTypeFilter = document.getElementById("facultyTypeFilter");
+    const employmentStatusFilter = document.getElementById("employmentStatusFilter");
+    const facultyTableBody = document.getElementById("facultyTableBody");
+
+    // Function to fetch and display data
+    function fetchFacultyData() {
+        const searchTerm = searchInput.value;
+        const facultyType = facultyTypeFilter.value;
+        const employmentStatus = employmentStatusFilter.value;
+
+        // Build the query string for the request
+        const queryString = `controller/search.php?search=${encodeURIComponent(searchTerm)}&faculty_type=${encodeURIComponent(facultyType)}&employment_status_code=${encodeURIComponent(employmentStatus)}`;
+
+        // Fetch data from the backend
+        fetch(queryString)
+            .then(response => response.json())
+            .then(data => {
+                // Clear the table body
+                facultyTableBody.innerHTML = "";
+
+                // Populate the table with the new data
+                if (data.length > 0) {
+                    data.forEach(row => {
+                        facultyTableBody.innerHTML += `
+                            <tr id='faculty-row-${row.id}'>
+                                <td class='py-3 px-4'>${row.first_name}</td>
+                                <td class='py-3 px-4'>${row.middle_initial}</td>
+                                <td class='py-3 px-4'>${row.last_name}</td>
+                                <td class='py-3 px-4'>${row.gender_code}</td>
+                                <td class='py-3 px-4'>${row.faculty_type}</td>
+                                <td class='py-3 px-4'>${row.employment_status_code}</td>
+                                <td class='py-3 px-4'>
+                                    <button class='text-blue-500 mr-2' onclick="editFaculty(${row.id}, '${row.faculty_type}')">Edit</button>
+                                    <button class='text-red-500 mr-2' onclick="deleteFaculty(${row.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    facultyTableBody.innerHTML = "<tr><td colspan='7' class='text-center py-3 px-4'>No faculty records found.</td></tr>";
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    }
+
+    // Add event listeners for dynamic search and filtering
+    searchInput.addEventListener("input", fetchFacultyData);
+    facultyTypeFilter.addEventListener("change", fetchFacultyData);
+    employmentStatusFilter.addEventListener("change", fetchFacultyData);
+
+    // Initial fetch on page load
+    fetchFacultyData();
+});
+
+//header data
+function fetchFacultyData() {
+    fetch('/faculty_management_system/controller/header_data.php')
+        .then(response => response.json())
+        .then(data => {
+            // Update the HTML with the dynamic data
+            document.getElementById('nonTeachingCount').textContent = data.nonTeachingCount;
+            document.getElementById('teachingCount').textContent = data.teachingCount;
+            document.getElementById('partTimeCount').textContent = data.partTimeCount;
+            document.getElementById('fullTimeCount').textContent = data.fullTimeCount;
+        })
+        .catch(error => {
+            console.error('Error fetching faculty data:', error);
+        });
+}
+window.onload = fetchFacultyData;
+
+//page reload
+document.getElementById('refreshButton').addEventListener('click', function () {
+    window.location.reload();
+});
+
 
 
 

@@ -7,6 +7,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include 'controller\fetch_faculty_data.php';
+
+
 ?>
 
 <!DOCTYPE html>
@@ -29,65 +31,131 @@ include 'controller\fetch_faculty_data.php';
 </style>
 <body class="bg-gray-900">
 
-    <!-- Container -->
-<div class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Container -->
+        <div class="max-w-7xl mx-auto px-4 py-6">
 
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-white">Manage Faculty</h1>
-        <div class="flex gap-4">
-            <button class="bg-green-600 px-6 py-3 text-white font-semibold rounded-lg" id="openModalBtn">
-                Add New Teaching Faculty
-            </button>
-            <button class="bg-green-600 px-6 py-3 text-white font-semibold rounded-lg" id="openNonTeachingModalBtn">
-                Add New None-Teaching Faculty
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-white">Manage Faculty</h1>
+                <div class="flex gap-4">
+                <button 
+                    class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+                    id="openModalBtn"
+                >
+                    Add New Teaching Faculty
+                </button>
+                <button 
+                    class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+                    id="openNonTeachingModalBtn"
+                >
+                    Add New Non-Teaching Faculty
+                </button>
+                </div>
+            </div>
+
+        <!-- Faculty Table -->
+        <div class="overflow-x-auto bg-gray-900 rounded-lg shadow-lg">
+
+        <section class="text-gray-400 bg-gray-800 body-font">
+            <div class="container px-5 py-24 mx-auto">
+                <div class="flex flex-wrap -m-4 text-center">
+                    <div class="p-4 sm:w-1/4 w-1/2">
+                        <h2 id="nonTeachingCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                        <p class="leading-relaxed">Non-Teaching Staff</p>
+                    </div>
+                    <div class="p-4 sm:w-1/4 w-1/2">
+                        <h2 id="teachingCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                        <p class="leading-relaxed">Teaching Staff</p>
+                    </div>
+                    <div class="p-4 sm:w-1/4 w-1/2">
+                        <h2 id="partTimeCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                        <p class="leading-relaxed">Part-timers</p>
+                    </div>
+                    <div class="p-4 sm:w-1/4 w-1/2">
+                        <h2 id="fullTimeCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                        <p class="leading-relaxed">Full-timers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Search and Filter Section -->
+        <div class="flex flex-wrap items-center gap-4 p-4 bg-gray-800 rounded-t-lg">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search by name..." 
+                class="w-full sm:w-auto px-4 py-2 border border-gray-600 bg-gray-700 text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+            <select 
+                id="facultyTypeFilter" 
+                class="w-full sm:w-auto px-4 py-2 border border-gray-600 bg-gray-700 text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            >
+                <option value="">Select Faculty Type</option>
+                <option value="Teaching Faculty">Teaching Faculty</option>
+                <option value="Non-Teaching Faculty">Non-Teaching Faculty</option>
+            </select>
+            <select 
+                id="employmentStatusFilter" 
+                class="w-full sm:w-auto px-4 py-2 border border-gray-600 bg-gray-700 text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            >
+                <option value="">Select Employment Status</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Full-time">Full-time</option>
+            </select>
+            <button 
+                id="refreshButton" 
+                class="px-4 py-2 bg-red-300 text-white rounded-lg ml-2 hover:bg-blue-600">
+                Refresh
             </button>
         </div>
-    </div>
 
-    <!-- Faculty Table -->
-    <div class="overflow-x-auto bg-gray-800 rounded-lg shadow-md">
-    <table class="min-w-full table-auto text-white">
-    <thead class="bg-gray-700">
-        <tr>
-            <th class="py-3 px-4 text-left">First Name</th>
-            <th class="py-3 px-4 text-left">Middle Initial</th>
-            <th class="py-3 px-4 text-left">Last Name</th>
-            <th class="py-3 px-4 text-left">Faculty Type</th>
-            <th class="py-3 px-4 text-left">Gender</th>
-            <th class="py-3 px-4 text-left">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if (isset($facultyData) && !empty($facultyData)) {
-            foreach ($facultyData as $row) {
-                echo "
-                <tr id='faculty-row-{$row['id']}'>
-                    <td class='py-3 px-4'>{$row['first_name']}</td>
-                    <td class='py-3 px-4'>{$row['middle_initial']}</td>
-                    <td class='py-3 px-4'>{$row['last_name']}</td>
-                    <td class='py-3 px-4'>{$row['faculty_type']}</td>
-                    <td class='py-3 px-4'>{$row['gender_name']}</td>
-                    <td class='py-3 px-4'>
-                        <!-- Inside your PHP loop where you generate the table -->
-                        <button 
-                            class='text-blue-500 mr-2' 
-                            onclick=\"editFaculty({$row['id']}, '{$row['faculty_type']}')\" 
-                            id='openEditfacultyBtn'>
-                            Edit
-                        </button>
-                        <button class='text-red-500 mr-2' onclick='deleteFaculty({$row['id']})'>Delete</button>
-                    </td>
+        <!-- Table Section -->
+        <table class="min-w-full table-auto text-gray-200 bg-gray-800 rounded-b-lg">
+            <thead class="bg-gray-700 text-gray-300">
+                <tr>
+                    <th class="py-3 px-4 text-left">First Name</th>
+                    <th class="py-3 px-4 text-left">Middle Initial</th>
+                    <th class="py-3 px-4 text-left">Last Name</th>
+                    <th class="py-3 px-4 text-left">Gender</th>
+                    <th class="py-3 px-4 text-left">Faculty Type</th>
+                    <th class="py-3 px-4 text-left">Employment Status</th>
+                    <th class="py-3 px-4 text-left">Actions</th>
                 </tr>
-                ";
-            }
-        } else {
-            echo "<tr><td colspan='6' class='text-center py-3 px-4'>No faculty records found.</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
-
+            </thead>
+            <tbody id="facultyTableBody" class="bg-gray-800 divide-y divide-gray-700">
+                <?php
+                if (isset($facultyData) && !empty($facultyData)) {
+                    foreach ($facultyData as $row) {
+                        echo "
+                        <tr id='faculty-row-{$row['id']}'>
+                            <td class='py-3 px-4'>{$row['first_name']}</td>
+                            <td class='py-3 px-4'>{$row['middle_initial']}</td>
+                            <td class='py-3 px-4'>{$row['last_name']}</td>
+                            <td class='py-3 px-4'>{$row['gender_name']}</td>
+                            <td class='py-3 px-4'>{$row['faculty_type']}</td>
+                            <td class='py-3 px-4'>{$row['employment_status_code']}</td>
+                            <td class='py-3 px-4'>
+                                <button 
+                                    class='text-blue-400 hover:text-blue-500 mr-2' 
+                                    onclick=\"editFaculty({$row['id']}, '{$row['faculty_type']}')\" 
+                                    id='openEditfacultyBtn'>
+                                    Edit
+                                </button>
+                                <button 
+                                    class='text-red-400 hover:text-red-500' 
+                                    onclick='deleteFaculty({$row['id']})'>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        ";
+                    }
+                } else {
+                    echo "<tr><td colspan='7' class='text-center py-3 px-4'>No faculty records found.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 
     <!-- Teaching Faculty Modal -->
@@ -117,23 +185,23 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="employmentStatus" class="block text-sm font-medium text-gray-300">Employment Status</label>
                             <select id="employmentStatus" name="employment_status_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Full-time</option>
-                                <option value="2">Part-time</option>
+                                <option >Full-time</option>
+                                <option >Part-time</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="gender" class="block text-sm font-medium text-gray-300">Gender</label>
                             <select id="gender" name="gender_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
+                                <option >Male</option>
+                                <option >Female</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="discipline" class="block text-sm font-medium text-gray-300">Teaching Discipline</label>
                             <select id="discipline" name="primary_teaching_discipline_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Math</option>
-                                <option value="2">Science</option>
-                                <option value="3">English</option>
+                                <option >Math</option>
+                                <option >Science</option>
+                                <option >English</option>
                             </select>
                         </div>
                     </div>
@@ -143,23 +211,23 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="rank" class="block text-sm font-medium text-gray-300">Faculty Rank</label>
                             <select id="rank" name="faculty_rank_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Assistant Professor</option>
-                                <option value="2">Associate Professor</option>
-                                <option value="3">Professor</option>
+                                <option >Assistant Professor</option>
+                                <option >Associate Professor</option>
+                                <option >Professor</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="teachingLoad" class="block text-sm font-medium text-gray-300">Teaching Load</label>
                             <select id="teachingLoad" name="teaching_load_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Full Load</option>
-                                <option value="2">Partial Load</option>
+                                <option >Full Load</option>
+                                <option >Partial Load</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="salary" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="salary" name="annual_salary_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Salary A</option>
-                                <option value="2">Salary B</option>
+                                <option >Salary A</option>
+                                <option >Salary B</option>
                             </select>
                         </div>
                     </div>
@@ -169,15 +237,15 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="license" class="block text-sm font-medium text-gray-300">Professional License</label>
                             <select id="license" name="professional_license_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Licensed</option>
-                                <option value="2">Unlicensed</option>
+                                <option >Licensed</option>
+                                <option >Unlicensed</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="tenure" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="tenure" name="tenure_of_employment_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Permanent</option>
-                                <option value="2">Temporary</option>
+                                <option >Permanent</option>
+                                <option >Temporary</option>
                             </select>
                         </div>
                     </div>
@@ -194,9 +262,9 @@ include 'controller\fetch_faculty_data.php';
                     <div class="mb-4">
                         <label for="highestDegree" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                         <select id="highestDegree" name="highest_degree_attained_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                            <option value="1">Bachelor's Degree</option>
-                            <option value="2">Master's Degree</option>
-                            <option value="3">Doctorate Degree</option>
+                            <option >Bachelor's Degree</option>
+                            <option >Master's Degree</option>
+                            <option >Doctorate Degree</option>
                         </select>
                     </div>
 
@@ -287,24 +355,24 @@ include 'controller\fetch_faculty_data.php';
                         </div>
                     </div>
 
-                    <!-- Designation and Employment Fields for Non-Teaching Faculty -->
+                   <!-- Designation and Employment Fields for Non-Teaching Faculty -->
                     <div class="grid grid-cols-3 gap-4">
                         <div class="mb-4">
                             <label for="nonTeaching_designation" class="block text-sm font-medium text-gray-300">Designation</label>
-                            <input type="number" id="nonTeaching_designation" name="non_teaching_designation" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="text" id="nonTeaching_designation" name="non_teaching_designation" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="nonTeaching_employmentStatus" class="block text-sm font-medium text-gray-300">Employment Status</label>
                             <select id="nonTeaching_employmentStatus" name="non_teaching_employment_status_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Full-time</option>
-                                <option value="2">Part-time</option>
+                                <option>Full-time</option>
+                                <option>Part-time</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="nonTeaching_gender" class="block text-sm font-medium text-gray-300">Gender</label>
                             <select id="nonTeaching_gender" name="non_teaching_gender_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
+                                <option>Male</option>
+                                <option>Female</option>
                             </select>
                         </div>
                     </div>
@@ -314,15 +382,15 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="nonTeaching_license" class="block text-sm font-medium text-gray-300">Professional License</label>
                             <select id="nonTeaching_license" name="non_teaching_professional_license_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Licensed</option>
-                                <option value="2">Unlicensed</option>
+                                <option>Licensed</option>
+                                <option>Unlicensed</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="nonTeaching_tenure" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="nonTeaching_tenure" name="non_teaching_tenure_of_employment_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Permanent</option>
-                                <option value="2">Temporary</option>
+                                <option>Permanent</option>
+                                <option>Temporary</option>
                             </select>
                         </div>
                     </div>
@@ -336,21 +404,21 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="nonTeaching_salary" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="nonTeaching_salary" name="non_teaching_annual_salary_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Salary A</option>
-                                <option value="2">Salary B</option>
+                                <option>Salary A</option>
+                                <option>Salary B</option>
                             </select>
                         </div>
                     </div>
 
                     <h2 class="text-xl font-semibold text-white mb-4">Educational Credentials Earned</h2>
-                    
+
                     <!-- Educational Credentials Fields for Non-Teaching Faculty -->
                     <div class="mb-4">
                         <label for="nonTeaching_highestDegree" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                         <select id="nonTeaching_highestDegree" name="non_teaching_highest_degree_attained_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                            <option value="1">Bachelor's Degree</option>
-                            <option value="2">Master's Degree</option>
-                            <option value="3">Doctorate Degree</option>
+                            <option>Bachelor's Degree</option>
+                            <option>Master's Degree</option>
+                            <option>Doctorate Degree</option>
                         </select>
                     </div>
 
@@ -422,7 +490,7 @@ include 'controller\fetch_faculty_data.php';
     <div id="teachingFacultyModal" class="fixed inset-0 bg-gray-900 bg-opacity-90 hidden z-50 py-10 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen">
             <div class="bg-gray-700 p-6 rounded-lg w-1/2 shadow-lg">
-                <h2 class="text-xl font-semibold text-white mb-4">Edit New Faculty</h2>
+                <h2 class="text-xl font-semibold text-white mb-4">Edit Teaching Faculty</h2>
                 <form id="facultyFormEdit">
                     <!-- Name Fields -->
                     <div class="grid grid-cols-3 gap-4">
@@ -445,23 +513,23 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="employmentStatusTeaching" class="block text-sm font-medium text-gray-300">Employment Status</label>
                             <select id="employmentStatusTeaching" name="employment_status_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Full-time</option>
-                                <option value="2">Part-time</option>
+                                <option>Full-time</option>
+                                <option>Part-time</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="genderTeaching" class="block text-sm font-medium text-gray-300">Gender</label>
                             <select id="genderTeaching" name="gender_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
+                                <option>Male</option>
+                                <option>Female</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="disciplineTeaching" class="block text-sm font-medium text-gray-300">Teaching Discipline</label>
                             <select id="disciplineTeaching" name="primary_teaching_discipline_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Math</option>
-                                <option value="2">Science</option>
-                                <option value="3">English</option>
+                                <option>Math</option>
+                                <option>Science</option>
+                                <option>English</option>
                             </select>
                         </div>
                     </div>
@@ -471,23 +539,23 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="rankTeaching" class="block text-sm font-medium text-gray-300">Faculty Rank</label>
                             <select id="rankTeaching" name="faculty_rank_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Assistant Professor</option>
-                                <option value="2">Associate Professor</option>
-                                <option value="3">Professor</option>
+                                <option>Assistant Professor</option>
+                                <option>Associate Professor</option>
+                                <option>Professor</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="teachingLoadTeaching" class="block text-sm font-medium text-gray-300">Teaching Load</label>
                             <select id="teachingLoadTeaching" name="teaching_load_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Full Load</option>
-                                <option value="2">Partial Load</option>
+                                <option>Full Load</option>
+                                <option>Partial Load</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="salaryTeaching" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="salaryTeaching" name="annual_salary_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Salary A</option>
-                                <option value="2">Salary B</option>
+                                <option>Salary A</option>
+                                <option>Salary B</option>
                             </select>
                         </div>
                     </div>
@@ -497,15 +565,15 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="licenseFaculty" class="block text-sm font-medium text-gray-300">Professional License</label>
                             <select id="licenseFaculty" name="professional_license_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Licensed</option>
-                                <option value="2">Unlicensed</option>
+                                <option>Licensed</option>
+                                <option>Unlicensed</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="tenureFaculty" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="tenureFaculty" name="tenure_of_employment_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Permanent</option>
-                                <option value="2">Temporary</option>
+                                <option>Permanent</option>
+                                <option>Temporary</option>
                             </select>
                         </div>
                     </div>
@@ -522,9 +590,9 @@ include 'controller\fetch_faculty_data.php';
                     <div class="mb-4">
                         <label for="highestDegreefaculty" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                         <select id="highestDegreeFaculty" name="highest_degree_attained_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                            <option value="1">Bachelor's Degree</option>
-                            <option value="2">Master's Degree</option>
-                            <option value="3">Doctorate Degree</option>
+                            <option>Bachelor's Degree</option>
+                            <option>Master's Degree</option>
+                            <option>Doctorate Degree</option>
                         </select>
                     </div>
 
@@ -596,7 +664,7 @@ include 'controller\fetch_faculty_data.php';
     <div id="noneModal" class="fixed inset-0 bg-gray-900 bg-opacity-90 hidden z-50 py-10 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen">
             <div class="bg-gray-700 p-6 rounded-lg w-1/2 shadow-lg">
-                <h2 class="text-xl font-semibold text-white mb-4">Edit New Faculty</h2>
+                <h2 class="text-xl font-semibold text-white mb-4">Edit None-Teaching Faculty</h2>
                 <form id="noneModalFormEdit">
                      <!-- Name Fields -->
                      <div class="grid grid-cols-3 gap-4">
@@ -618,20 +686,20 @@ include 'controller\fetch_faculty_data.php';
                     <div class="grid grid-cols-3 gap-4">
                         <div class="mb-4">
                             <label for="noneModalDesignation" class="block text-sm font-medium text-gray-300">Designation</label>
-                            <input type="number" id="noneModalDesignation" name="designationEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="text" id="noneModalDesignation" name="designationEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="noneModalEmploymentStatus" class="block text-sm font-medium text-gray-300">Employment Status</label>
                             <select id="noneModalEmploymentStatus" name="employment_status_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Full-time</option>
-                                <option value="2">Part-time</option>
+                                <option>Full-time</option>
+                                <option>Part-time</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="noneModalGender" class="block text-sm font-medium text-gray-300">Gender</label>
                             <select id="noneModalGender" name="gender_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
+                                <option>Male</option>
+                                <option>Female</option>
                             </select>
                         </div>
                     </div>
@@ -641,15 +709,15 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="noneModalLicense" class="block text-sm font-medium text-gray-300">Professional License</label>
                             <select id="noneModalLicense" name="professional_license_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Licensed</option>
-                                <option value="2">Unlicensed</option>
+                                <option>Licensed</option>
+                                <option>Unlicensed</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="noneModalTenure" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="noneModalTenure" name="tenure_of_employment_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Permanent</option>
-                                <option value="2">Temporary</option>
+                                <option>Permanent</option>
+                                <option>Temporary</option>
                             </select>
                         </div>
                     </div>
@@ -663,8 +731,8 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="noneModalSalary" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="noneModalSalary" name="annual_salary_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option value="1">Salary A</option>
-                                <option value="2">Salary B</option>
+                                <option>Salary A</option>
+                                <option>Salary B</option>
                             </select>
                         </div>
                     </div>
@@ -675,9 +743,9 @@ include 'controller\fetch_faculty_data.php';
                     <div class="mb-4">
                         <label for="noneModalHighestDegree" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                         <select id="noneModalHighestDegree" name="highest_degree_attained_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                            <option value="1">Bachelor's Degree</option>
-                            <option value="2">Master's Degree</option>
-                            <option value="3">Doctorate Degree</option>
+                            <option>Bachelor's Degree</option>
+                            <option>Master's Degree</option>
+                            <option>Doctorate Degree</option>
                         </select>
                     </div>
 

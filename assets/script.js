@@ -155,14 +155,14 @@ function populateTeachingFacultyModal(data) {
     document.getElementById('licenseFaculty').value = data.professional_license_code;
 
     // Populate the educational credentials if available
-    if (data.educational_credentials) {
-        document.getElementById('highestDegreeFaculty').value = data.educational_credentials.highest_degree_attained_code;
-        document.getElementById('bachelorProgramFieldFaculty').value = data.educational_credentials.bachelors_degree_program_name;
-        document.getElementById('bachelorDegreeCodeFieldFaculty').value = data.educational_credentials.bachelors_degree_code;
-        document.getElementById('masterProgramFieldFaculty').value = data.educational_credentials.masters_degree_program_name;
-        document.getElementById('masterDegreeCodeFieldFaculty').value = data.educational_credentials.masters_degree_code;
-        document.getElementById('doctorateProgramFieldFaculty').value = data.educational_credentials.doctorate_program_name;
-        document.getElementById('doctorateDegreeCodeFieldFaculty').value = data.educational_credentials.doctorate_program_code;
+    if (data.educational_credentials_earned) {
+        document.getElementById('highestDegreeFaculty').value = data.educational_credentials_earned.highest_degree_attained_code;
+        document.getElementById('bachelorProgramFieldFaculty').value = data.educational_credentials_earned.bachelors_degree_program_name;
+        document.getElementById('bachelorDegreeCodeFieldFaculty').value = data.educational_credentials_earned.bachelors_degree_code;
+        document.getElementById('masterProgramFieldFaculty').value = data.educational_credentials_earned.masters_degree_program_name;
+        document.getElementById('masterDegreeCodeFieldFaculty').value = data.educational_credentials_earned.masters_degree_code;
+        document.getElementById('doctorateProgramFieldFaculty').value = data.educational_credentials_earned.doctorate_program_name;
+        document.getElementById('doctorateDegreeCodeFieldFaculty').value = data.educational_credentials_earned.doctorate_program_code;
     }
 }
 
@@ -171,7 +171,7 @@ function populateNonTeachingFacultyModal(data) {
     document.getElementById('noneModalFirstName').value = data.first_name;
     document.getElementById('noneModalLastName').value = data.last_name;
     document.getElementById('noneModalMiddleInitial').value = data.middle_initial;
-    document.getElementById('noneModalDesignation').value = data.designation;
+    document.getElementById('noneModalDesignation').value = data.designation_code;
     document.getElementById('noneModalEmploymentStatus').value = data.employment_status_code;
     document.getElementById('noneModalGender').value = data.gender_code;
     document.getElementById('noneModalLicense').value = data.professional_license_code;
@@ -180,16 +180,19 @@ function populateNonTeachingFacultyModal(data) {
     document.getElementById('noneModalSalary').value = data.annual_salary_code;
 
     // Populate the educational credentials if available
-    if (data.educational_credentials) {
-        document.getElementById('noneModalHighestDegree').value = data.educational_credentials.highest_degree_attained_code;
-        document.getElementById('noneModalBachelorProgram').value = data.educational_credentials.bachelors_degree_program_name;
-        document.getElementById('noneModalBachelorDegreeCode').value = data.educational_credentials.bachelors_degree_code;
-        document.getElementById('noneModalMasterProgram').value = data.educational_credentials.masters_degree_program_name;
-        document.getElementById('noneModalMasterDegreeCode').value = data.educational_credentials.masters_degree_code;
-        document.getElementById('noneModalDoctorateProgram').value = data.educational_credentials.doctorate_program_name;
-        document.getElementById('noneModalDoctorateDegreeCode').value = data.educational_credentials.doctorate_program_code;
+    const educationalCredentials = data.educational_credentials_earned || data.educational_credentials;  // Check both fields
+
+    if (educationalCredentials) {
+        document.getElementById('noneModalHighestDegree').value = educationalCredentials.highest_degree_attained_code;
+        document.getElementById('noneModalBachelorProgram').value = educationalCredentials.bachelors_degree_program_name;
+        document.getElementById('noneModalBachelorDegreeCode').value = educationalCredentials.bachelors_degree_code;
+        document.getElementById('noneModalMasterProgram').value = educationalCredentials.masters_degree_program_name;
+        document.getElementById('noneModalMasterDegreeCode').value = educationalCredentials.masters_degree_code;
+        document.getElementById('nonTeaching_doctorateProgram').value = educationalCredentials.doctorate_program_name;
+        document.getElementById('nonTeaching_doctorateDegreeCode').value = educationalCredentials.doctorate_program_code;
     }
 }
+
 
 
 
