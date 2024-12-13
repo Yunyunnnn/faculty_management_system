@@ -35,7 +35,7 @@ include 'controller\fetch_faculty_data.php';
         <div class="max-w-7xl mx-auto px-4 py-6">
 
             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold text-white">Manage Faculty</h1>
+                <h1 class="text-3xl font-bold text-white">Faculty Management</h1>
                 <div class="flex gap-4">
                 <button 
                     class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
@@ -88,17 +88,17 @@ include 'controller\fetch_faculty_data.php';
             />
             <select 
                 id="facultyTypeFilter" 
-                class="w-full sm:w-auto px-4 py-2 border border-gray-600 bg-gray-700 text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                class="w-1/3 sm:w-auto px-4 py-2 border border-gray-600 bg-gray-700 text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
             >
-                <option value="">Select Faculty Type</option>
+                <option value=""> Faculty Type</option>
                 <option value="Teaching Faculty">Teaching Faculty</option>
                 <option value="Non-Teaching Faculty">Non-Teaching Faculty</option>
             </select>
             <select 
                 id="employmentStatusFilter" 
-                class="w-full sm:w-auto px-4 py-2 border border-gray-600 bg-gray-700 text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                class="w-1/3 sm:w-auto px-4 py-2 border border-gray-600 bg-gray-700 text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
             >
-                <option value="">Select Employment Status</option>
+                <option value=""> Employment Status</option>
                 <option value="Part-time">Part-time</option>
                 <option value="Full-time">Full-time</option>
             </select>
