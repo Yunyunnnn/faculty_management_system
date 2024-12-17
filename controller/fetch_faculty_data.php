@@ -1,4 +1,7 @@
 <?php
+
+//tale contents 
+
 include($_SERVER['DOCUMENT_ROOT']."/faculty_management_system/config/connection.php");
 
 // Define the query to fetch both teaching and non-teaching faculty data

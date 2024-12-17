@@ -12,10 +12,35 @@ $facultyId = $_POST['faculty_id'];
 try {
     $pdo->beginTransaction();
 
-    // Delete related records in the pivot table
-    $pivotDeleteQuery = "DELETE FROM educational_credential_earned WHERE teaching_faculty_id = :faculty_id OR non_teaching_faculty_id = :faculty_id";
-    $pivotStmt = $pdo->prepare($pivotDeleteQuery);
-    $pivotStmt->execute(['faculty_id' => $facultyId]);
+    // Delete from the bachelors_degree_earned table for teaching faculty
+    $bachelorDeleteQuery = "DELETE FROM bachelors_degree_earned WHERE teaching_faculty_id = :faculty_id";
+    $bachelorStmt = $pdo->prepare($bachelorDeleteQuery);
+    $bachelorStmt->execute(['faculty_id' => $facultyId]);
+
+    // Delete from the masters_degree_earned table for teaching faculty
+    $masterDeleteQuery = "DELETE FROM masters_degree_earned WHERE teaching_faculty_id = :faculty_id";
+    $masterStmt = $pdo->prepare($masterDeleteQuery);
+    $masterStmt->execute(['faculty_id' => $facultyId]);
+
+    // Delete from the doctorate_degree_earned table for teaching faculty
+    $doctorateDeleteQuery = "DELETE FROM doctorate_degree_earned WHERE teaching_faculty_id = :faculty_id";
+    $doctorateStmt = $pdo->prepare($doctorateDeleteQuery);
+    $doctorateStmt->execute(['faculty_id' => $facultyId]);
+
+    // Delete from the bachelors_degree_earned table for non-teaching faculty
+    $bachelorDeleteQueryNonTeaching = "DELETE FROM bachelors_degree_earned WHERE non_teaching_faculty_id = :faculty_id";
+    $bachelorStmtNonTeaching = $pdo->prepare($bachelorDeleteQueryNonTeaching);
+    $bachelorStmtNonTeaching->execute(['faculty_id' => $facultyId]);
+
+    // Delete from the masters_degree_earned table for non-teaching faculty
+    $masterDeleteQueryNonTeaching = "DELETE FROM masters_degree_earned WHERE non_teaching_faculty_id = :faculty_id";
+    $masterStmtNonTeaching = $pdo->prepare($masterDeleteQueryNonTeaching);
+    $masterStmtNonTeaching->execute(['faculty_id' => $facultyId]);
+
+    // Delete from the doctorate_degree_earned table for non-teaching faculty
+    $doctorateDeleteQueryNonTeaching = "DELETE FROM doctorate_degree_earned WHERE non_teaching_faculty_id = :faculty_id";
+    $doctorateStmtNonTeaching = $pdo->prepare($doctorateDeleteQueryNonTeaching);
+    $doctorateStmtNonTeaching->execute(['faculty_id' => $facultyId]);
 
     // Delete from the teaching faculty table
     $teachingDeleteQuery = "DELETE FROM teaching_faculty_information WHERE id = :faculty_id";
@@ -40,3 +65,4 @@ try {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
 ?>
+

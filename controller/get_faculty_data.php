@@ -24,13 +24,14 @@ header('Content-Type: application/json');
 echo json_encode($data);
 
 function getTeachingFacultyData($facultyId) {
-    global $pdo;  
+    global $pdo;
 
+    // Get the faculty basic information
     $query = "
         SELECT 
             first_name, last_name, middle_initial, employment_status_code, 
             gender_code, professional_license_code, tenure_of_employment_code, 
-            subjects_taught, annual_salary_code, primary_teaching_discipline_code, faculty_rank_code, teaching_load_code
+            annual_salary_code, primary_teaching_discipline_code, faculty_rank_code, teaching_load_code
         FROM teaching_faculty_information
         WHERE id = :facultyId
     ";
@@ -40,21 +41,60 @@ function getTeachingFacultyData($facultyId) {
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($data) {
-        $educationalQuery = "
-            SELECT 
-                highest_degree_attained_code, bachelors_degree_program_name, 
-                bachelors_degree_code, masters_degree_program_name, 
-                masters_degree_code, doctorate_program_name, doctorate_program_code
-            FROM educational_credential_earned
+        // Retrieve Bachelor's Degree
+        $bachelorQuery = "
+            SELECT bachelors_degree_program_name, bachelors_degree_code, bachelors_degree_major
+            FROM bachelors_degree_earned
             WHERE teaching_faculty_id = :facultyId
         ";
-
-        $stmt = $pdo->prepare($educationalQuery);
+        $stmt = $pdo->prepare($bachelorQuery);
         $stmt->execute(['facultyId' => $facultyId]);
-        $educationalData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $bachelorData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($educationalData) {
-            $data['educational_credentials_earned'] = $educationalData;
+        if ($bachelorData) {
+            $data['bachelors_degrees'] = $bachelorData;
+        }
+
+        // Retrieve Master's Degree
+        $masterQuery = "
+            SELECT masters_degree_program_name, masters_degree_code, masters_degree_major
+            FROM masters_degree_earned
+            WHERE teaching_faculty_id = :facultyId
+        ";
+        $stmt = $pdo->prepare($masterQuery);
+        $stmt->execute(['facultyId' => $facultyId]);
+        $masterData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($masterData) {
+            $data['masters_degrees'] = $masterData;
+        }
+
+        // Retrieve Doctorate Degree
+        $doctorateQuery = "
+            SELECT doctorate_program_name, doctorate_program_code, doctorate_degree_major
+            FROM doctorate_degree_earned
+            WHERE teaching_faculty_id = :facultyId
+        ";
+        $stmt = $pdo->prepare($doctorateQuery);
+        $stmt->execute(['facultyId' => $facultyId]);
+        $doctorateData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($doctorateData) {
+            $data['doctorate_degrees'] = $doctorateData;
+        }
+
+        // Retrieve Subjects Taught and Semester from teaching_faculty_subjects
+        $subjectQuery = "
+            SELECT subjects_taught, semester
+            FROM teaching_faculty_subjects
+            WHERE teaching_faculty_id = :facultyId
+        ";
+        $stmt = $pdo->prepare($subjectQuery);
+        $stmt->execute(['facultyId' => $facultyId]);
+        $subjectData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($subjectData) {
+            $data['subjects_taught'] = $subjectData;
         }
     }
 
@@ -62,13 +102,14 @@ function getTeachingFacultyData($facultyId) {
 }
 
 function getNonTeachingFacultyData($facultyId) {
-    global $pdo;  
+    global $pdo;
 
+    // First, fetch the basic information about the faculty member
     $query = "
         SELECT 
             first_name, last_name, middle_initial, designation_code, 
             employment_status_code, gender_code, professional_license_code, 
-            tenure_of_employment_code, years_of_service, annual_salary_code
+            tenure_of_employment_code, years_of_service, annual_salary_code, highest_degree_attained_code
         FROM non_teaching_faculty_information
         WHERE id = :facultyId
     ";
@@ -80,35 +121,45 @@ function getNonTeachingFacultyData($facultyId) {
     error_log("Non-Teaching Faculty Data: " . print_r($data, true));
 
     if ($data) {
-        $educationalQuery = "
+        // Fetch Bachelor's Degree Information
+        $bachelorQuery = "
             SELECT 
-                highest_degree_attained_code, bachelors_degree_program_name, 
-                bachelors_degree_code, masters_degree_program_name, 
-                masters_degree_code, doctorate_program_name, doctorate_program_code
-            FROM educational_credential_earned
+                bachelors_degree_program_name, bachelors_degree_code, bachelors_degree_major
+            FROM bachelors_degree_earned
             WHERE non_teaching_faculty_id = :facultyId
         ";
-
-        $stmt = $pdo->prepare($educationalQuery);
+        $stmt = $pdo->prepare($bachelorQuery);
         $stmt->execute(['facultyId' => $facultyId]);
-        $educationalData = $stmt->fetch(PDO::FETCH_ASSOC);  // Use fetch() to get a single result
+        $bachelorData = $stmt->fetchAll(PDO::FETCH_ASSOC);  // Fetch all records if multiple degrees exist
 
-        if ($educationalData) {
-            // Change the key to educational_credentials_earned to match the teaching faculty structure
-            $data['educational_credentials_earned'] = [
-                'highest_degree_attained_code' => $educationalData['highest_degree_attained_code'] ?? null,
-                'bachelors_degree_program_name' => $educationalData['bachelors_degree_program_name'] ?? null,
-                'bachelors_degree_code' => $educationalData['bachelors_degree_code'] ?? null,
-                'masters_degree_program_name' => $educationalData['masters_degree_program_name'] ?? null,
-                'masters_degree_code' => $educationalData['masters_degree_code'] ?? null,
-                'doctorate_program_name' => $educationalData['doctorate_program_name'] ?? null,
-                'doctorate_program_code' => $educationalData['doctorate_program_code'] ?? null
-            ];
-        }
+        // Fetch Master's Degree Information
+        $masterQuery = "
+            SELECT 
+                masters_degree_program_name, masters_degree_code, masters_degree_major
+            FROM masters_degree_earned
+            WHERE non_teaching_faculty_id = :facultyId
+        ";
+        $stmt = $pdo->prepare($masterQuery);
+        $stmt->execute(['facultyId' => $facultyId]);
+        $masterData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch Doctorate Degree Information
+        $doctorateQuery = "
+            SELECT 
+                doctorate_program_name, doctorate_program_code, doctorate_degree_major
+            FROM doctorate_degree_earned
+            WHERE non_teaching_faculty_id = :facultyId
+        ";
+        $stmt = $pdo->prepare($doctorateQuery);
+        $stmt->execute(['facultyId' => $facultyId]);
+        $doctorateData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Adding degree data to the main data array
+        $data['bachelors_degree_earned'] = $bachelorData ?: [];
+        $data['masters_degree_earned'] = $masterData ?: [];
+        $data['doctorate_degree_earned'] = $doctorateData ?: [];
     }
 
     return $data;
 }
-
-
 ?>
