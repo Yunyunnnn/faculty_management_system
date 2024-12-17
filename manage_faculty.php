@@ -113,7 +113,7 @@ include 'controller\fetch_faculty_data.php';
                 <thead class="bg-gray-700 text-gray-300">
                     <tr>
                         <th class="py-3 px-4 text-left">First Name</th>
-                        <th class="py-3 px-4 text-left">Middle Initial</th>
+                        <th class="py-3 px-4 text-left">Middle Name</th>
                         <th class="py-3 px-4 text-left">Last Name</th>
                         <th class="py-3 px-4 text-left">Gender</th>
                         <th class="py-3 px-4 text-left">Faculty Type</th>
