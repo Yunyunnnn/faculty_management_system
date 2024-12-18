@@ -7,8 +7,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include 'controller\fetch_faculty_data.php';
-
-
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +27,11 @@ include 'controller\fetch_faculty_data.php';
   scrollbar-width: none;  
 }
 </style>
+<?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+    <div class="p-4 mb-4 text-green-800 bg-green-200 border border-green-300 rounded-lg">
+        Data has been successfully saved!
+    </div>
+<?php endif; ?>
 <body class="bg-gray-900">
 
         <!-- header -->
@@ -532,6 +535,8 @@ include 'controller\fetch_faculty_data.php';
             <div class="bg-gray-700 p-6 rounded-lg w-1/2 shadow-lg">
                 <h2 class="text-xl font-semibold text-white mb-4">Edit Teaching Faculty</h2>
                 <form id="facultyFormEdit">
+                    <input type="hidden" name="id" id="teachingModalFacultyId">
+
                     <!-- Name Fields -->
                     <div class="grid grid-cols-3 gap-4">
                         <div class="mb-4">
@@ -626,7 +631,9 @@ include 'controller\fetch_faculty_data.php';
                         </div>
                     </div>
 
+                    <!-- subss -->
                     <div class="grid grid-cols-2 gap-4 items-center mb-4">
+                        <input type="hidden" name="subject_id" id="subjects_id">
                         <div class="mb-4">
                             <label for="subjectsTaughtFaculty" class="block text-sm font-medium text-gray-300">Subjects Taught</label>
                             <input type="text" id="subjectsTaughtFaculty" name="subjects_taught" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
@@ -640,47 +647,45 @@ include 'controller\fetch_faculty_data.php';
                         </div>
                     </div>
 
-
                     <h2 class="text-xl font-semibold text-white mb-4">Educational Credentials Earned</h2>
                     
                     <!-- Bachelor's Degree Section -->
-                    <div id="bachelorDegreeFieldsSection" class="bg-gray-800 rounded px-4 "> 
-                        <div class="flex flex-wrap gap-4 items-center">
+                    <div class="items-center" id="bachelorDegreeFieldsSection">
+                        <input type="hidden" name="bachelor_id[]">
                             <div class="mb-4">
                                 <label for="bachelorProgramFieldFaculty" class="block text-sm font-medium text-gray-300">Bachelor's Program</label>
-                                <input type="text" id="bachelorProgramFieldFaculty" name="bachelors_degree_program_name[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="bachelorProgramFieldFaculty" name="bachelors_degree_program_nameTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="bachelorDegreeCodeFieldFaculty" class="block text-sm font-medium text-gray-300">Bachelor's Degree Code</label>
-                                <input type="text" id="bachelorDegreeCodeFieldFaculty" name="bachelors_degree_code[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="bachelorDegreeCodeFieldFaculty" name="bachelors_degree_codeTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="bachelorMajorFieldFaculty" class="block text-sm font-medium text-gray-300">Bachelor's Major</label>
-                                <input type="text" id="bachelorMajorFieldFaculty" name="bachelors_degree_major[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="bachelorMajorFieldFaculty" name="bachelors_degree_majorTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="addBachelorDegreeField" class="block text-sm font-medium text-gray-300">Add</label>
-                                <button type="button" id="addBachelorDegreeField" class="mt-2 p-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                                <button type="button" id="addBachelorDegreeFieldTeach" class="mt-2 p-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                                     +
                                 </button>
                             </div>
-                        </div>
                     </div>
 
                     <!-- Master's Degree Section -->
-                    <div  id="masterDegreeFieldsSection"  class="bg-gray-800 rounded px-4 ">
-                        <div class="flex flex-wrap gap-4 items-center">
+                    <div class="items-center" id="masterDegreeFieldsSection">
+                        <input type="hidden" name="masters_id[]">
                             <div class="mb-4">
                                 <label for="masterProgramFieldFaculty" class="block text-sm font-medium text-gray-300">Master's Program</label>
-                                <input type="text" id="masterProgramFieldFaculty" name="masters_degree_program_name[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="masterProgramFieldFaculty" name="masters_degree_program_nameTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="masterDegreeCodeFieldFaculty" class="block text-sm font-medium text-gray-300">Master's Degree Code</label>
-                                <input type="text" id="masterDegreeCodeFieldFaculty" name="masters_degree_code[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="masterDegreeCodeFieldFaculty" name="masters_degree_codeTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="masterMajorFieldFaculty" class="block text-sm font-medium text-gray-300">Master's Major</label>
-                                <input type="text" id="masterMajorFieldFaculty" name="masters_degree_major[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="masterMajorFieldFaculty" name="masters_degree_majorTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="addMasterDegreeField" class="block text-sm font-medium text-gray-300">Add</label>
@@ -688,23 +693,22 @@ include 'controller\fetch_faculty_data.php';
                                     +
                                 </button>
                             </div>
-                        </div>
                     </div>
 
                     <!-- Doctorate Degree Section -->
-                    <div  id="doctorateDegreeFieldsSection"  class="bg-gray-800 rounded px-4 ">
-                        <div class="flex flex-wrap gap-4 items-center">
+                    <div class="items-center" id="doctorateDegreeFieldsSection">
+                        <input type="hidden" name="doctorate_id[]">
                             <div class="mb-4">
                                 <label for="doctorateProgramFieldFaculty" class="block text-sm font-medium text-gray-300">Doctorate Program</label>
-                                <input type="text" id="doctorateProgramFieldFaculty" name="doctorate_program_name[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="doctorateProgramFieldFaculty" name="doctorate_program_nameTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="doctorateDegreeCodeFieldFaculty" class="block text-sm font-medium text-gray-300">Doctorate Degree Code</label>
-                                <input type="text" id="doctorateDegreeCodeFieldFaculty" name="doctorate_program_code[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="doctorateDegreeCodeFieldFaculty" name="doctorate_program_codeTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="doctorateMajorFieldFaculty" class="block text-sm font-medium text-gray-300">Doctorate Major</label>
-                                <input type="text" id="doctorateMajorFieldFaculty" name="doctorate_degree_major[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <input type="text" id="doctorateMajorFieldFaculty" name="doctorate_degree_majorTeach[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                             </div>
                             <div class="mb-4">
                                 <label for="addDoctorateDegreeField" class="block text-sm font-medium text-gray-300">Add</label>
@@ -712,12 +716,11 @@ include 'controller\fetch_faculty_data.php';
                                     +
                                 </button>
                             </div>
-                        </div>
                     </div>
 
                     <!-- Buttons -->
                     <div class="!mt-4 flex justify-between items-center">
-                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Save Faculty</button>
+                        <button type="submit" id="submitEditfacultyBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Save Faculty</button>
                         <button type="button" id="closeEditfacultyBtn" class="bg-gray-700 text-gray-300 px-6 py-2 rounded-lg hover:bg-gray-600">Close</button>
                     </div>
                 </form>
@@ -731,6 +734,8 @@ include 'controller\fetch_faculty_data.php';
             <div class="bg-gray-700 p-6 rounded-lg w-1/2 shadow-lg">
                 <h2 class="text-xl font-semibold text-white mb-4">Edit None-Teaching Faculty</h2>
                 <form id="noneModalFormEdit">
+                    <input type="hidden" name="id" id="noneModalFacultyId">
+
                      <!-- Name Fields -->
                      <div class="grid grid-cols-3 gap-4">
                         <div class="mb-4">
@@ -813,7 +818,8 @@ include 'controller\fetch_faculty_data.php';
                     <h2 class="text-xl font-semibold text-white mb-4">Educational Credentials Earned</h2>
 
                     <!-- Bachelor's Degree Section -->
-                    <div class="flex flex-wrap gap-4 items-center" id="noneModalBachelorDegreeFields">
+                    <div class="items-center" id="noneModalBachelorDegreeFields">
+                        <input type="hidden" name="nonebachelor_id[]">
                         <div class="mb-4">
                             <label for="noneModalBachelorProgram" class="block text-sm font-medium text-gray-300">Bachelor's Program</label>
                             <input type="text" id="noneModalBachelorProgram" name="bachelors_degree_program_nameEdit[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
@@ -835,18 +841,19 @@ include 'controller\fetch_faculty_data.php';
                     </div>
 
                     <!-- Master's Degree Section --> 
-                    <div class="flex flex-wrap gap-4 items-center" id="noneModalMasterDegreeFields">
+                    <div class="items-center" id="noneModalMasterDegreeFields">
+                        <input type="hidden" name="nonemaster_id[]" >
                         <div class="mb-4">
                             <label for="noneModalMasterProgram" class="block text-sm font-medium text-gray-300">Master's Program</label>
-                            <input type="text" id="noneModalMasterProgram" name="masters_degree_program_nameEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="text" id="noneModalMasterProgram" name="masters_degree_program_nameEdit[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="noneModalMasterDegreeCode" class="block text-sm font-medium text-gray-300">Master's Degree Code</label>
-                            <input type="text" id="noneModalMasterDegreeCode" name="masters_degree_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="text" id="noneModalMasterDegreeCode" name="masters_degree_codeEdit[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="noneModalMasterMajor" class="block text-sm font-medium text-gray-300">Master's Major</label>
-                            <input type="text" id="noneModalMasterMajor" name="masters_degree_majorEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="text" id="noneModalMasterMajor" name="masters_degree_majorEdit[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="noneModalAddMasterDegree" class="block text-sm font-medium text-gray-300">Add </label>
@@ -857,18 +864,19 @@ include 'controller\fetch_faculty_data.php';
                     </div>
 
                     <!-- Doctorate Degree Section for Non-Teaching Faculty -->
-                    <div class="flex flex-wrap gap-4 items-center" id="nonTeaching_doctorateDegreeFields">
+                    <div class="items-center" id="noneModalDoctorateDegreeFields">
+                        <input type="hidden" name="nonedoctorate_id[]">
                         <div class="mb-4">
                             <label for="noneModalDoctorateProgram" class="block text-sm font-medium text-gray-300">Doctorate Program</label>
-                            <input type="text" id="noneModalDoctorateProgram" name="non_teaching_doctorate_program_name" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <input type="text" id="noneModalDoctorateProgram" name="doctorate_degree_program_nameEdit[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
-                            <label for="noenModalDoctorDegreeCode" class="block text-sm font-medium text-gray-300">Doctorate Degree Code</label>
-                            <input type="text" id="noenModalDoctorDegreeCode" name="non_teaching_doctorate_program_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <label for="noneModalDoctorDegreeCode" class="block text-sm font-medium text-gray-300">Doctorate Degree Code</label>
+                            <input type="text" id="noneModalDoctorDegreeCode" name="doctorate_program_codeEdit[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
-                            <label for="noneTeachingDoctorMajor" class="block text-sm font-medium text-gray-300">Doctorate Major</label>
-                            <input type="text" id="noneTeachingDoctorMajor" name="non_teaching_doctorate_major" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                            <label for="noneModalDoctorMajor" class="block text-sm font-medium text-gray-300">Doctorate Major</label>
+                            <input type="text" id="noneModalDoctorMajor" name="doctorate_degree_majorEdit[]" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                         </div>
                         <div class="mb-4">
                             <label for="nonTeaching_addDoctorateDegree" class="block text-sm font-medium text-gray-300">Add </label>
@@ -880,7 +888,7 @@ include 'controller\fetch_faculty_data.php';
 
                     <!-- Buttons -->
                     <div class="!mt-4 flex justify-between items-center">
-                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Save Faculty</button>
+                        <button type="submit" id="noneModalSubmitBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Save Faculty</button>
                         <button type="button" id="noneModalCloseBtn" class="bg-gray-700 text-gray-300 px-6 py-2 rounded-lg hover:bg-gray-600">Close</button>
                     </div>
                 </form>
@@ -892,6 +900,8 @@ include 'controller\fetch_faculty_data.php';
 
 </div>
     <script src="assets/script.js"></script>
+    <script src="assets/nonteachingdata.js"></script>
+    <script src="assets/teachingdata.js"></script>
     <script src="assets/functions.js"></script>
 </body>
 </html>

@@ -50,25 +50,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Handle Bachelor's Degrees
-        if (!empty($_POST['bachelors_degree_program_name']) && !empty($_POST['bachelors_degree_code']) && !empty($_POST['bachelors_degree_major'])) {
+        if (!empty($_POST['bachelors_degree_program_name']) || !empty($_POST['bachelors_degree_code']) || !empty($_POST['bachelors_degree_major'])) {
             $bachelors_programs = $_POST['bachelors_degree_program_name'];
             $bachelors_codes = $_POST['bachelors_degree_code'];
             $bachelors_majors = $_POST['bachelors_degree_major'];
 
+            // Ensure "none" is stored if the fields are empty
             foreach ($bachelors_programs as $index => $program_name) {
-                $program_name = $program_name ?: 'none';
-                $degree_code = isset($bachelors_codes[$index]) ? $bachelors_codes[$index] : 'none';
-                $major = isset($bachelors_majors[$index]) ? $bachelors_majors[$index] : 'none';
+                $program_name = !empty($program_name) ? $program_name : 'none';
+                $degree_code = isset($bachelors_codes[$index]) && !empty($bachelors_codes[$index]) ? $bachelors_codes[$index] : 'none';
+                $major = isset($bachelors_majors[$index]) && !empty($bachelors_majors[$index]) ? $bachelors_majors[$index] : 'none';
 
-                // Insert into bachelors_degree_earned if program, code, and major are not empty
-                if ($program_name != 'none' && $degree_code != 'none' && $major != 'none') {
-                    $edu_query = "INSERT INTO bachelors_degree_earned 
-                                    (teaching_faculty_id, bachelors_degree_program_name, bachelors_degree_code, bachelors_degree_major) 
-                                VALUES (?, ?, ?, ?)";
-                    
-                    $edu_stmt = $pdo->prepare($edu_query);
-                    $edu_stmt->execute([$teaching_faculty_id, $program_name, $degree_code, $major]);
-                }
+                // Insert into bachelors_degree_earned
+                $edu_query = "INSERT INTO bachelors_degree_earned 
+                                (teaching_faculty_id, bachelors_degree_program_name, bachelors_degree_code, bachelors_degree_major) 
+                            VALUES (?, ?, ?, ?)";
+
+                $edu_stmt = $pdo->prepare($edu_query);
+                $edu_stmt->execute([$teaching_faculty_id, $program_name, $degree_code, $major]);
             }
         }
 
