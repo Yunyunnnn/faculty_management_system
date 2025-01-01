@@ -146,8 +146,3 @@ function clearSection(sectionId) {
         section.removeChild(section.lastChild);
     }
 }
-
-
-
-
-

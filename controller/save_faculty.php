@@ -72,48 +72,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Handle Master's Degrees
-        if (!empty($_POST['masters_degree_program_name']) && !empty($_POST['masters_degree_code']) && !empty($_POST['masters_degree_major'])) {
+        if (!empty($_POST['masters_degree_program_name']) || !empty($_POST['masters_degree_code']) || !empty($_POST['masters_degree_major'])) {
             $masters_programs = $_POST['masters_degree_program_name'];
             $masters_codes = $_POST['masters_degree_code'];
             $masters_majors = $_POST['masters_degree_major'];
 
             foreach ($masters_programs as $index => $program_name) {
-                $program_name = $program_name ?: 'none';
-                $degree_code = isset($masters_codes[$index]) ? $masters_codes[$index] : 'none';
-                $major = isset($masters_majors[$index]) ? $masters_majors[$index] : 'none';
+                $program_name = !empty($program_name) ? $program_name : 'none';
+                $degree_code = isset($masters_codes[$index]) && !empty($masters_codes[$index]) ? $masters_codes[$index] : 'none';
+                $major = isset($masters_majors[$index]) && !empty($masters_majors[$index]) ? $masters_majors[$index] : 'none';
 
-                // Insert into masters_degree_earned if program, code, and major are not empty
-                if ($program_name != 'none' && $degree_code != 'none' && $major != 'none') {
-                    $edu_query = "INSERT INTO masters_degree_earned 
-                                    (teaching_faculty_id, masters_degree_program_name, masters_degree_code, masters_degree_major) 
-                                VALUES (?, ?, ?, ?)";
-                    
-                    $edu_stmt = $pdo->prepare($edu_query);
-                    $edu_stmt->execute([$teaching_faculty_id, $program_name, $degree_code, $major]);
-                }
+                // Insert into masters_degree_earned
+                $edu_query = "INSERT INTO masters_degree_earned 
+                                (teaching_faculty_id, masters_degree_program_name, masters_degree_code, masters_degree_major) 
+                            VALUES (?, ?, ?, ?)";
+
+                $edu_stmt = $pdo->prepare($edu_query);
+                $edu_stmt->execute([$teaching_faculty_id, $program_name, $degree_code, $major]);
             }
         }
 
         // Handle Doctorate Degrees
-        if (!empty($_POST['doctorate_program_name']) && !empty($_POST['doctorate_program_code']) && !empty($_POST['doctorate_degree_major'])) {
+        if (!empty($_POST['doctorate_program_name']) || !empty($_POST['doctorate_program_code']) || !empty($_POST['doctorate_degree_major'])) {
             $doctorate_programs = $_POST['doctorate_program_name'];
             $doctorate_codes = $_POST['doctorate_program_code'];
             $doctorate_majors = $_POST['doctorate_degree_major'];
 
             foreach ($doctorate_programs as $index => $program_name) {
-                $program_name = $program_name ?: 'none';
-                $degree_code = isset($doctorate_codes[$index]) ? $doctorate_codes[$index] : 'none';
-                $major = isset($doctorate_majors[$index]) ? $doctorate_majors[$index] : 'none';
+                $program_name = !empty($program_name) ? $program_name : 'none';
+                $degree_code = isset($doctorate_codes[$index]) && !empty($doctorate_codes[$index]) ? $doctorate_codes[$index] : 'none';
+                $major = isset($doctorate_majors[$index]) && !empty($doctorate_majors[$index]) ? $doctorate_majors[$index] : 'none';
 
-                // Insert into doctorate_degree_earned if program, code, and major are not empty
-                if ($program_name != 'none' && $degree_code != 'none' && $major != 'none') {
-                    $edu_query = "INSERT INTO doctorate_degree_earned 
-                                    (teaching_faculty_id, doctorate_program_name, doctorate_program_code, doctorate_degree_major) 
-                                VALUES (?, ?, ?, ?)";
-                    
-                    $edu_stmt = $pdo->prepare($edu_query);
-                    $edu_stmt->execute([$teaching_faculty_id, $program_name, $degree_code, $major]);
-                }
+                // Insert into doctorate_degree_earned
+                $edu_query = "INSERT INTO doctorate_degree_earned 
+                                (teaching_faculty_id, doctorate_program_name, doctorate_program_code, doctorate_degree_major) 
+                            VALUES (?, ?, ?, ?)";
+
+                $edu_stmt = $pdo->prepare($edu_query);
+                $edu_stmt->execute([$teaching_faculty_id, $program_name, $degree_code, $major]);
             }
         }
 

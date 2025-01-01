@@ -213,29 +213,46 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="rank" class="block text-sm font-medium text-gray-300">Faculty Rank</label>
                             <select id="rank" name="faculty_rank_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
+                                <option >Teaching Fellow or Teaching Associater</option>
+                                <option >Teacher, Master Teacher</option>
+                                <option >Lecturer, Senior Lecturer, Professorial Lecturer</option>
+                                <option >Professor Emeritus</option>
+                                <option >Visiting Professor</option>
+                                <option >Adjunct or affiliate faculty</option>
+                                <option >Instructor</option>
                                 <option >Assistant Professor</option>
-                                <option >Associate Professor</option>
-                                <option >Professor</option>
+                                <option >Full Professor</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="teachingLoad" class="block text-sm font-medium text-gray-300">Teaching Load</label>
                             <select id="teachingLoad" name="teaching_load_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option >Full Load</option>
-                                <option >Partial Load</option>
+                                <option >1.0  - 6.0 units per semester</option>
+                                <option >7.0  - 12.0 units per semester</option>
+                                <option >13.0 - 18.0 units per semester</option>
+                                <option >19.0 - 24.0 units per semester</option>
+                                <option >more than 24 units per semester</option>
+                                <option >Not known</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="salary" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="salary" name="annual_salary_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option >Salary A</option>
-                                <option >Salary B</option>
+                                <option>60,000 below</option>
+                                <option >60,000 -  69,999</option>
+                                <option >70,000 -  79,999</option>
+                                <option >80,000 - 89,999</option>
+                                <option >90,000 -  99,999</option>
+                                <option >100,000 - 149,999</option>
+                                <option >150,000 - 249,999</option>
+                                <option >250,000 - 499,999</option>
+                                <option >500,000 - Above</option>
                             </select>
                         </div>
                     </div>
 
                     <!-- License and Tenure Fields -->
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-2 gap-4">
                         <div class="mb-4">
                             <label for="license" class="block text-sm font-medium text-gray-300">Professional License</label>
                             <select id="license" name="professional_license_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
@@ -247,17 +264,45 @@ include 'controller\fetch_faculty_data.php';
                             <label for="tenure" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="tenure" name="tenure_of_employment_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
                                 <option >Permanent</option>
-                                <option >Temporary</option>
+                                <option >Probationary</option>
+                                <option >Casual</option>
+                                <option >Contractual</option>
                             </select>
                         </div>
-                        <div class="mb-4">
+                    </div>
+
+                    <div class="mb-4">
                             <label for="highestDegree" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                             <select id="highestDegree" name="highest_degree_attained_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option >Bachelor's Degree</option>
-                                <option >Master's Degree</option>
-                                <option >Doctorate Degree</option>
+                                <option >No formal education at all</option>
+                                <option >Partial elementary schooling but did not complete Grade 4</option>
+                                <option >Completed Grade 4 but did not graduate from elementary school</option>
+                                <option >Completed Elementary School</option>
+                                <option >Partial completion of High School</option>
+                                <option >Secondary school graduate or equivalent</option>
+                                <option >Completed Tech/Voch</option>
+                                <option >Partial completion of pre-baccalaureate certificate, diploma or associateship</option>
+                                <option >Completed pre-bacc certificate, diploma or associateship</option>
+                                <option >Completed Year 1 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 2 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 3 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 4 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 5 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 6 of baccalaureate level or equivalent</option>
+                                <option >Completed a baccalaureate degree (including DVM, DDM, D Opt)</option>
+                                <option >Partial Completion of postgraduate certificate or diploma program</option>
+                                <option >Completed Year 1 of MD or LLB</option>
+                                <option >Completed Year 2 of MD or LLB</option>
+                                <option >Completed Year 3 of MD or LLB</option>
+                                <option >Completed Year 4 of MD or LLB</option>
+                                <option >Completed MD or LLB (or equivalent)</option>
+                                <option >Partial completion of masters degree</option>
+                                <option >Completed all masters requirements except masters thesis</option>                                
+                                <option >Completed all doctorate requirements except dissertation</option>
+                                <option >Completed masters degree or equivalent</option>
+                                <option >Partial completion of doctorate degree</option>
+                                <option >Completed doctoratedegree</option>
                             </select>
-                        </div>
                     </div>
 
                     <!-- Subjects Taught -->
@@ -416,8 +461,10 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="nonTeaching_tenure" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="nonTeaching_tenure" name="non_teaching_tenure_of_employment_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Permanent</option>
-                                <option>Temporary</option>
+                                <option >Permanent</option>
+                                <option >Probationary</option>
+                                <option >Casual</option>
+                                <option >Contractual</option>
                             </select>
                         </div>
                     </div>
@@ -431,16 +478,48 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="nonTeaching_salary" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="nonTeaching_salary" name="non_teaching_annual_salary_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Salary A</option>
-                                <option>Salary B</option>
+                                <option>60,000 below</option>
+                                <option >60,000 -  69,999</option>
+                                <option >70,000 -  79,999</option>
+                                <option >80,000 - 89,999</option>
+                                <option >90,000 -  99,999</option>
+                                <option >100,000 - 149,999</option>
+                                <option >150,000 - 249,999</option>
+                                <option >250,000 - 499,999</option>
+                                <option >500,000 - Above</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="nonTeaching_highestDegree" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                             <select id="nonTeaching_highestDegree" name="non_teaching_highest_degree_attained_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Bachelor's Degree</option>
-                                <option>Master's Degree</option>
-                                <option>Doctorate Degree</option>
+                            <option >No formal education at all</option>
+                                <option >Partial elementary schooling but did not complete Grade 4</option>
+                                <option >Completed Grade 4 but did not graduate from elementary school</option>
+                                <option >Completed Elementary School</option>
+                                <option >Partial completion of High School</option>
+                                <option >Secondary school graduate or equivalent</option>
+                                <option >Completed Tech/Voch</option>
+                                <option >Partial completion of pre-baccalaureate certificate, diploma or associateship</option>
+                                <option >Completed pre-bacc certificate, diploma or associateship</option>
+                                <option >Completed Year 1 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 2 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 3 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 4 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 5 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 6 of baccalaureate level or equivalent</option>
+                                <option >Completed a baccalaureate degree (including DVM, DDM, D Opt)</option>
+                                <option >Partial Completion of postgraduate certificate or diploma program</option>
+                                <option >Completed Year 1 of MD or LLB</option>
+                                <option >Completed Year 2 of MD or LLB</option>
+                                <option >Completed Year 3 of MD or LLB</option>
+                                <option >Completed Year 4 of MD or LLB</option>
+                                <option >Completed MD or LLB (or equivalent)</option>
+                                <option >Partial completion of masters degree</option>
+                                <option >Completed all masters requirements except masters thesis</option>                                
+                                <option >Completed all doctorate requirements except dissertation</option>
+                                <option >Completed masters degree or equivalent</option>
+                                <option >Partial completion of doctorate degree</option>
+                                <option >Completed doctoratedegree</option>
                             </select>
                         </div>
                     </div>
@@ -584,29 +663,46 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="rankTeaching" class="block text-sm font-medium text-gray-300">Faculty Rank</label>
                             <select id="rankTeaching" name="faculty_rank_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Assistant Professor</option>
-                                <option>Associate Professor</option>
-                                <option>Professor</option>
+                            <option >Teaching Fellow or Teaching Associater</option>
+                                <option >Teacher, Master Teacher</option>
+                                <option >Lecturer, Senior Lecturer, Professorial Lecturer</option>
+                                <option >Professor Emeritus</option>
+                                <option >Visiting Professor</option>
+                                <option >Adjunct or affiliate faculty</option>
+                                <option >Instructor</option>
+                                <option >Assistant Professor</option>
+                                <option >Full Professor</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="teachingLoadTeaching" class="block text-sm font-medium text-gray-300">Teaching Load</label>
                             <select id="teachingLoadTeaching" name="teaching_load_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Full Load</option>
-                                <option>Partial Load</option>
+                                <option >1.0  - 6.0 units per semester</option>
+                                <option >7.0  - 12.0 units per semester</option>
+                                <option >13.0 - 18.0 units per semester</option>
+                                <option >19.0 - 24.0 units per semester</option>
+                                <option >more than 24 units per semester</option>
+                                <option >Not known</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="salaryTeaching" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="salaryTeaching" name="annual_salary_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Salary A</option>
-                                <option>Salary B</option>
+                                <option>60,000 below</option>
+                                <option >60,000 -  69,999</option>
+                                <option >70,000 -  79,999</option>
+                                <option >80,000 - 89,999</option>
+                                <option >90,000 -  99,999</option>
+                                <option >100,000 - 149,999</option>
+                                <option >150,000 - 249,999</option>
+                                <option >250,000 - 499,999</option>
+                                <option >500,000 - Above</option>
                             </select>
                         </div>
                     </div>
 
                     <!-- License and Tenure Fields -->
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-2 gap-4">
                         <div class="mb-4">
                             <label for="licenseFaculty" class="block text-sm font-medium text-gray-300">Professional License</label>
                             <select id="licenseFaculty" name="professional_license_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
@@ -617,18 +713,46 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="tenureFaculty" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="tenureFaculty" name="tenure_of_employment_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Permanent</option>
-                                <option>Temporary</option>
+                                <option >Permanent</option>
+                                <option >Probationary</option>
+                                <option >Casual</option>
+                                <option >Contractual</option>
                             </select>
                         </div>
-                        <div class="mb-4">
+                    </div>
+
+                    <div class="mb-4">
                             <label for="highestDegreefaculty" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                             <select id="highestDegreeFaculty" name="highest_degree_attained_code" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Bachelor's Degree</option>
-                                <option>Master's Degree</option>
-                                <option>Doctorate Degree</option>
+                            <option >No formal education at all</option>
+                                <option >Partial elementary schooling but did not complete Grade 4</option>
+                                <option >Completed Grade 4 but did not graduate from elementary school</option>
+                                <option >Completed Elementary School</option>
+                                <option >Partial completion of High School</option>
+                                <option >Secondary school graduate or equivalent</option>
+                                <option >Completed Tech/Voch</option>
+                                <option >Partial completion of pre-baccalaureate certificate, diploma or associateship</option>
+                                <option >Completed pre-bacc certificate, diploma or associateship</option>
+                                <option >Completed Year 1 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 2 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 3 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 4 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 5 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 6 of baccalaureate level or equivalent</option>
+                                <option >Completed a baccalaureate degree (including DVM, DDM, D Opt)</option>
+                                <option >Partial Completion of postgraduate certificate or diploma program</option>
+                                <option >Completed Year 1 of MD or LLB</option>
+                                <option >Completed Year 2 of MD or LLB</option>
+                                <option >Completed Year 3 of MD or LLB</option>
+                                <option >Completed Year 4 of MD or LLB</option>
+                                <option >Completed MD or LLB (or equivalent)</option>
+                                <option >Partial completion of masters degree</option>
+                                <option >Completed all masters requirements except masters thesis</option>                                
+                                <option >Completed all doctorate requirements except dissertation</option>
+                                <option >Completed masters degree or equivalent</option>
+                                <option >Partial completion of doctorate degree</option>
+                                <option >Completed doctoratedegree</option>
                             </select>
-                        </div>
                     </div>
 
                     <!-- subss -->
@@ -786,8 +910,10 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="noneModalTenure" class="block text-sm font-medium text-gray-300">Tenure of Employment</label>
                             <select id="noneModalTenure" name="tenure_of_employment_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Permanent</option>
-                                <option>Temporary</option>
+                                <option >Permanent</option>
+                                <option >Probationary</option>
+                                <option >Casual</option>
+                                <option >Contractual</option>
                             </select>
                         </div>
                     </div>
@@ -801,16 +927,48 @@ include 'controller\fetch_faculty_data.php';
                         <div class="mb-4">
                             <label for="noneModalSalary" class="block text-sm font-medium text-gray-300">Annual Salary</label>
                             <select id="noneModalSalary" name="annual_salary_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Salary A</option>
-                                <option>Salary B</option>
+                                <option>60,000 below</option>
+                                <option >60,000 -  69,999</option>
+                                <option >70,000 -  79,999</option>
+                                <option >80,000 - 89,999</option>
+                                <option >90,000 -  99,999</option>
+                                <option >100,000 - 149,999</option>
+                                <option >150,000 - 249,999</option>
+                                <option >250,000 - 499,999</option>
+                                <option >500,000 - Above</option>
                             </select>
                         </div>
                         <div class="mb-4">
                         <label for="noneModalHighestDegree" class="block text-sm font-medium text-gray-300">Highest Degree Attained</label>
                             <select id="noneModalHighestDegree" name="highest_degree_attained_codeEdit" class="w-full mt-2 p-2 border border-gray-600 bg-gray-800 text-gray-200 rounded">
-                                <option>Bachelor's Degree</option>
-                                <option>Master's Degree</option>
-                                <option>Doctorate Degree</option>
+                            <option >No formal education at all</option>
+                                <option >Partial elementary schooling but did not complete Grade 4</option>
+                                <option >Completed Grade 4 but did not graduate from elementary school</option>
+                                <option >Completed Elementary School</option>
+                                <option >Partial completion of High School</option>
+                                <option >Secondary school graduate or equivalent</option>
+                                <option >Completed Tech/Voch</option>
+                                <option >Partial completion of pre-baccalaureate certificate, diploma or associateship</option>
+                                <option >Completed pre-bacc certificate, diploma or associateship</option>
+                                <option >Completed Year 1 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 2 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 3 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 4 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 5 of baccalaureate level or equivalent</option>
+                                <option >Completed Year 6 of baccalaureate level or equivalent</option>
+                                <option >Completed a baccalaureate degree (including DVM, DDM, D Opt)</option>
+                                <option >Partial Completion of postgraduate certificate or diploma program</option>
+                                <option >Completed Year 1 of MD or LLB</option>
+                                <option >Completed Year 2 of MD or LLB</option>
+                                <option >Completed Year 3 of MD or LLB</option>
+                                <option >Completed Year 4 of MD or LLB</option>
+                                <option >Completed MD or LLB (or equivalent)</option>
+                                <option >Partial completion of masters degree</option>
+                                <option >Completed all masters requirements except masters thesis</option>                                
+                                <option >Completed all doctorate requirements except dissertation</option>
+                                <option >Completed masters degree or equivalent</option>
+                                <option >Partial completion of doctorate degree</option>
+                                <option >Completed doctoratedegree</option>
                             </select>
                         </div>
                     </div>
