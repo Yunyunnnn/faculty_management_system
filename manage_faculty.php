@@ -34,9 +34,9 @@ include 'controller\fetch_faculty_data.php';
 <?php endif; ?>
 <body class="bg-gray-900">
 
-        <!-- header -->
-        <div class="max-w-7xl mx-auto px-4 py-6">
-            <div class="flex justify-between items-center mb-6">
+    <!-- header -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="flex justify-between items-center mb-6">
                 <h1 class="text-3xl font-bold text-white">Faculty Management</h1>
                 <div class="flex gap-4">
                 <button 
@@ -52,10 +52,15 @@ include 'controller\fetch_faculty_data.php';
                     Add New Non-Teaching Faculty
                 </button>
                 </div>
-            </div>
+                <button 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                    onclick="window.location.href='controller/export_teaching_faculty_excel.php'">
+                    Export to Excel
+                </button>
+    </div>
 
-        <!-- Faculty Table -->
-        <div class="overflow-x-auto bg-gray-900 rounded-lg shadow-lg">
+    <!-- Faculty Table -->
+    <div class="overflow-x-auto bg-gray-900 rounded-lg shadow-lg">
 
             <section class="text-gray-400 bg-gray-800 body-font">
                 <div class="container px-5 py-24 mx-auto">
@@ -158,7 +163,7 @@ include 'controller\fetch_faculty_data.php';
                     ?>
                 </tbody>
             </table>
-        </div>
+    </div>
 
     <!-- Teaching Faculty Modal -->
     <div id="facultyModal" class="fixed inset-0 bg-gray-900 bg-opacity-90 hidden z-50 py-10 overflow-y-auto">
