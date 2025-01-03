@@ -16,6 +16,7 @@ include 'controller\fetch_faculty_data.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Faculty</title>
     <link href="assets/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <style>
 .example::-webkit-scrollbar {
@@ -34,29 +35,47 @@ include 'controller\fetch_faculty_data.php';
 <?php endif; ?>
 <body class="bg-gray-900">
 
-    <!-- header -->
-    <div class="max-w-7xl mx-auto px-4 py-6">
-        <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold text-white">Faculty Management</h1>
-                <div class="flex gap-4">
-                <button 
-                    class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
-                    id="openModalBtn"
-                >
-                    Add New Teaching Faculty
-                </button>
-                <button 
-                    class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
-                    id="openNonTeachingModalBtn"
-                >
-                    Add New Non-Teaching Faculty
-                </button>
-                </div>
-                <button 
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
-                    onclick="window.location.href='controller/export_teaching_faculty_excel.php'">
-                    Export to Excel
-                </button>
+<!-- header -->
+<div class="max-w-7xl mx-auto px-4 py-6">
+
+    <div class="flex justify-between items-center mb-6">
+        <!-- Title at the start -->
+        <div class="flex items-center gap-2">
+            <img src="https://i.ibb.co/P44qSBC/Group-9logofirst.png" alt="Logo" class="w-8 h-8">
+            <h1 class="text-2xl font-bold text-white"> ADFC Faculty Management</h1>
+        </div>
+        
+        <!-- Buttons at the end -->
+        <div class="flex gap-4 justify-end">
+            <button 
+                id="exportTeachingBtn" 
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                onclick="window.location.href='controller/export_teaching_faculty_excel.php'"
+                style="display: none;"
+            >
+                Export Teaching Data
+            </button>
+            <button 
+                id="exportNonTeachingBtn" 
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                onclick="window.location.href='controller/export_Nonteaching_faculty_excel.php'"
+                style="display: none;"
+            >
+                Export Non Teaching Data
+            </button>
+            <button 
+                class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+                id="openModalBtn"
+            >
+                Add Teaching Faculty
+            </button>
+            <button 
+                class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+                id="openNonTeachingModalBtn"
+            >
+                Add None-Teaching Faculty
+            </button>
+        </div>
     </div>
 
     <!-- Faculty Table -->
@@ -66,19 +85,31 @@ include 'controller\fetch_faculty_data.php';
                 <div class="container px-5 py-24 mx-auto">
                     <div class="flex flex-wrap -m-4 text-center">
                         <div class="p-4 sm:w-1/4 w-1/2">
-                            <h2 id="nonTeachingCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fas fa-user-tie text-white mr-4 text-3xl"></i>
+                                <h2 id="nonTeachingCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            </div>
                             <p class="leading-relaxed">Non-Teaching Staff</p>
                         </div>
                         <div class="p-4 sm:w-1/4 w-1/2">
-                            <h2 id="teachingCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fas fa-chalkboard-teacher text-white mr-4 text-3xl"></i>
+                                <h2 id="teachingCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            </div>
                             <p class="leading-relaxed">Teaching Staff</p>
                         </div>
                         <div class="p-4 sm:w-1/4 w-1/2">
-                            <h2 id="partTimeCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fas fa-user-clock text-white mr-4 text-3xl"></i>
+                                <h2 id="partTimeCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            </div>
                             <p class="leading-relaxed">Part-timers</p>
                         </div>
                         <div class="p-4 sm:w-1/4 w-1/2">
-                            <h2 id="fullTimeCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fas fa-user text-white mr-4 text-3xl"></i>
+                                <h2 id="fullTimeCount" class="title-font font-medium sm:text-4xl text-3xl text-white">0</h2>
+                            </div>
                             <p class="leading-relaxed">Full-timers</p>
                         </div>
                     </div>
@@ -108,7 +139,7 @@ include 'controller\fetch_faculty_data.php';
                     <option value=""> Employment Status</option>
                     <option value="Part-time">Part-time</option>
                     <option value="Full-time">Full-time</option>
-                </select>
+                </select>            
                 <button 
                     id="refreshButton" 
                     class="px-4 py-2 bg-red-300 text-white rounded-lg ml-2 hover:bg-blue-600">
@@ -1061,7 +1092,6 @@ include 'controller\fetch_faculty_data.php';
 
 </div>
 
-</div>
     <script src="assets/script.js"></script>
     <script src="assets/nonteachingdata.js"></script>
     <script src="assets/teachingdata.js"></script>

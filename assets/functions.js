@@ -346,6 +346,26 @@ document.getElementById('refreshButton').addEventListener('click', function () {
     window.location.reload();
 });
 
+const facultyTypeFilter = document.getElementById('facultyTypeFilter');
+const exportTeachingBtn = document.getElementById('exportTeachingBtn');
+const exportNonTeachingBtn = document.getElementById('exportNonTeachingBtn');
+
+facultyTypeFilter.addEventListener('change', function() {
+    const selectedValue = facultyTypeFilter.value;
+
+    // Hide both buttons by default
+    exportTeachingBtn.style.display = 'none';
+    exportNonTeachingBtn.style.display = 'none';
+
+    // Show the appropriate button based on the selected value
+    if (selectedValue === 'Teaching Faculty') {
+        exportTeachingBtn.style.display = 'inline-block';
+    } else if (selectedValue === 'Non-Teaching Faculty') {
+        exportNonTeachingBtn.style.display = 'inline-block';
+    }
+});
+
+
 
 
 
