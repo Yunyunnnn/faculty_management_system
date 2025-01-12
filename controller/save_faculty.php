@@ -18,10 +18,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $highest_degree_attained_code = $_POST['highest_degree_attained_code'] ?: 'none';
     
     // Retrieve the subjects_taught and semester values
-    $subjects_taught = $_POST['subjects_taught'] ?: 'none';  // Default to 'none' if empty
-    $semester = $_POST['semester'] ?: 'none';  // Default to 'none' if empty
+    $subjects_taught = $_POST['subjects_taught'] ?: 'none';  
+    $semester = $_POST['semester'] ?: 'none';  
 
     try {
+        // Check for existing faculty with the same name
+        $check_query = "SELECT id FROM teaching_faculty_information 
+                        WHERE first_name = ? AND last_name = ? AND middle_initial = ?";
+        $check_stmt = $pdo->prepare($check_query);
+        $check_stmt->execute([$first_name, $last_name, $middle_initial]);
+        
+        if ($check_stmt->rowCount() > 0) {
+            echo json_encode(['success' => false, 'message' => 'Duplicate faculty member found.']);
+            exit;
+        }
+
         // Insert data into teaching_faculty_information
         $query = "INSERT INTO teaching_faculty_information 
                     (first_name, last_name, middle_initial, employment_status_code, gender_code, 
@@ -55,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $bachelors_codes = $_POST['bachelors_degree_code'];
             $bachelors_majors = $_POST['bachelors_degree_major'];
 
-            // Ensure "none" is stored if the fields are empty
             foreach ($bachelors_programs as $index => $program_name) {
                 $program_name = !empty($program_name) ? $program_name : 'none';
                 $degree_code = isset($bachelors_codes[$index]) && !empty($bachelors_codes[$index]) ? $bachelors_codes[$index] : 'none';

@@ -18,6 +18,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $highest_degree_attained_code = $_POST['non_teaching_highest_degree_attained_code'] ?: 'none';
 
     try {
+        // Check if the faculty member already exists
+        $check_query = "SELECT COUNT(*) FROM non_teaching_faculty_information 
+                        WHERE first_name = ? AND last_name = ? AND middle_initial = ?";
+        $check_stmt = $pdo->prepare($check_query);
+        $check_stmt->execute([$first_name, $last_name, $middle_initial]);
+
+        if ($check_stmt->fetchColumn() > 0) {
+            echo json_encode(['success' => false, 'message' => 'Faculty member already exists.']);
+            exit;
+        }
+
         // Insert non-teaching faculty information
         $query = "INSERT INTO non_teaching_faculty_information 
                     (first_name, last_name, middle_initial, designation_code, employment_status_code, gender_code, 

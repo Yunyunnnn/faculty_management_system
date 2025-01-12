@@ -28,10 +28,12 @@ document.getElementById("facultyForm").addEventListener("submit", function (e) {
     .then(data => {
         if (data.success) {
             alert('Faculty added successfully!');
+            window.location.reload();
             document.getElementById("facultyForm").reset();  // Reset the form
             document.getElementById("facultyModal").classList.add("hidden");  // Close modal
         } else {
-            alert('Error adding faculty!!!');
+            alert('Faculty Already Exists!');
+            window.location.reload();
         }
     })
     .catch(error => {
@@ -70,10 +72,12 @@ document.getElementById("nonTeachingFacultyForm").addEventListener("submit", fun
     .then(data => {
         if (data.success) {
             alert('Faculty added successfully!');
+            window.location.reload();
             document.getElementById("nonTeachingFacultyForm").reset();  // Reset the form
             document.getElementById("nonTeachingFacultyModal").classList.add("hidden");  // Close modal
         } else {
-            alert('Error adding faculty!');
+            alert('None Teaching Faculty Already Exists!');
+            window.location.reload();
         }
     })
     .catch(error => {

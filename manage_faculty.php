@@ -1,12 +1,21 @@
 <?php
 session_start();
 
+// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
+    header('Location: /faculty_management_system/index.php'); // Redirect to login page if not logged in
     exit();
 }
 
-include 'controller\fetch_faculty_data.php';
+// Logout logic
+if (isset($_GET['logout'])) {
+    session_unset(); // Unset all session variables
+    session_destroy(); // Destroy the session
+    header("Location: /faculty_management_system/index.php"); // Redirect to the login page
+    exit();
+}
+
+include 'controller/fetch_faculty_data.php';
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +42,7 @@ include 'controller\fetch_faculty_data.php';
         Data has been successfully saved!
     </div>
 <?php endif; ?>
+
 <body class="bg-gray-900">
 
 <!-- header -->
@@ -43,7 +53,7 @@ include 'controller\fetch_faculty_data.php';
         <div class="flex items-center gap-2">
             <img src="https://i.ibb.co/P44qSBC/Group-9logofirst.png" alt="Logo" class="w-8 h-8">
             <h1 class="text-2xl font-bold text-white"> ADFC Faculty Management</h1>
-        </div>
+            </div>
         
         <!-- Buttons at the end -->
         <div class="flex gap-4 justify-end">
@@ -63,6 +73,9 @@ include 'controller\fetch_faculty_data.php';
             >
                 Export Non Teaching Data
             </button>
+
+            <a href="manage_faculty.php?logout=true" class="bg-blue-700 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Logout</a>
+
             <button 
                 class="bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
                 id="openModalBtn"
@@ -76,6 +89,8 @@ include 'controller\fetch_faculty_data.php';
                 Add None-Teaching Faculty
             </button>
         </div>
+
+        
     </div>
 
     <!-- Faculty Table -->
@@ -1092,9 +1107,16 @@ include 'controller\fetch_faculty_data.php';
 
 </div>
 
+
     <script src="assets/script.js"></script>
     <script src="assets/nonteachingdata.js"></script>
     <script src="assets/teachingdata.js"></script>
     <script src="assets/functions.js"></script>
+
+    
 </body>
 </html>
+
+
+
+
